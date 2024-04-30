@@ -1,3 +1,7 @@
+## Roadmap
+
+- Use Key "hradmin" for login as a admin account 
+
 
 ## Installation
 

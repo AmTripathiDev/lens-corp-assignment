@@ -1,10 +1,14 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import React, { useState } from "react";
+import Login from "./admin";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <h1> I am using Home Function </h1>
+    <div>
+      <Login />
+    </div>
   );
 }

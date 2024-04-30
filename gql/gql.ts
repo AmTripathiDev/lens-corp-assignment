@@ -16,6 +16,7 @@ const documents = {
     "#graphql\n    mutation CreateNewEmployee($employee: createEmployee!) {\n        createNewEmployee(employee: $employee) {\n          name\n          email\n          LinkedinProfile\n          aadharNumber\n          ProfileImageUrl\n        }\n    }\n": types.CreateNewEmployeeDocument,
     "#graphql\nquery GetAdminDetail($email: String!, $password: String!, $key: String!) {\n    getAdminDetail(email: $email, password: $password, key: $key)\n  }\n": types.GetAdminDetailDocument,
     "#graphql\n   query GetAllEmployees {\n       getAllEmployees {\n         LinkedinProfile\n         ProfileImageUrl\n         aadharNumber  \n         email\n         id\n         name\n       }\n    }\n": types.GetAllEmployeesDocument,
+    "\n  query GetSignedURL($imageName: String!, $imageType: String!) {\n    getSignedURLForTweet(imageName: $imageName, imageType: $imageType)\n  }\n": types.GetSignedUrlDocument,
 };
 
 /**
@@ -44,6 +45,10 @@ export function graphql(source: "#graphql\nquery GetAdminDetail($email: String!,
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "#graphql\n   query GetAllEmployees {\n       getAllEmployees {\n         LinkedinProfile\n         ProfileImageUrl\n         aadharNumber  \n         email\n         id\n         name\n       }\n    }\n"): (typeof documents)["#graphql\n   query GetAllEmployees {\n       getAllEmployees {\n         LinkedinProfile\n         ProfileImageUrl\n         aadharNumber  \n         email\n         id\n         name\n       }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetSignedURL($imageName: String!, $imageType: String!) {\n    getSignedURLForTweet(imageName: $imageName, imageType: $imageType)\n  }\n"): (typeof documents)["\n  query GetSignedURL($imageName: String!, $imageType: String!) {\n    getSignedURLForTweet(imageName: $imageName, imageType: $imageType)\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -40,6 +40,7 @@ export type Query = {
   __typename?: 'Query';
   getAdminDetail?: Maybe<Scalars['String']['output']>;
   getAllEmployees?: Maybe<Array<Maybe<Employee>>>;
+  getSignedURLForTweet?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -47,6 +48,12 @@ export type QueryGetAdminDetailArgs = {
   email: Scalars['String']['input'];
   key: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type QueryGetSignedUrlForTweetArgs = {
+  imageName: Scalars['String']['input'];
+  imageType: Scalars['String']['input'];
 };
 
 export type Admin = {
@@ -87,7 +94,16 @@ export type GetAllEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllEmployeesQuery = { __typename?: 'Query', getAllEmployees?: Array<{ __typename?: 'Employee', LinkedinProfile?: string | null, ProfileImageUrl?: string | null, aadharNumber: string, email: string, id: string, name: string } | null> | null };
 
+export type GetSignedUrlQueryVariables = Exact<{
+  imageName: Scalars['String']['input'];
+  imageType: Scalars['String']['input'];
+}>;
+
+
+export type GetSignedUrlQuery = { __typename?: 'Query', getSignedURLForTweet?: string | null };
+
 
 export const CreateNewEmployeeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateNewEmployee"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"employee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"createEmployee"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createNewEmployee"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"employee"},"value":{"kind":"Variable","name":{"kind":"Name","value":"employee"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"LinkedinProfile"}},{"kind":"Field","name":{"kind":"Name","value":"aadharNumber"}},{"kind":"Field","name":{"kind":"Name","value":"ProfileImageUrl"}}]}}]}}]} as unknown as DocumentNode<CreateNewEmployeeMutation, CreateNewEmployeeMutationVariables>;
 export const GetAdminDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAdminDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getAdminDetail"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"Argument","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}]}]}}]} as unknown as DocumentNode<GetAdminDetailQuery, GetAdminDetailQueryVariables>;
 export const GetAllEmployeesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllEmployees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getAllEmployees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"LinkedinProfile"}},{"kind":"Field","name":{"kind":"Name","value":"ProfileImageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"aadharNumber"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>;
+export const GetSignedUrlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSignedURL"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"imageName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"imageType"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSignedURLForTweet"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"imageName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"imageName"}}},{"kind":"Argument","name":{"kind":"Name","value":"imageType"},"value":{"kind":"Variable","name":{"kind":"Name","value":"imageType"}}}]}]}}]} as unknown as DocumentNode<GetSignedUrlQuery, GetSignedUrlQueryVariables>;

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { graphqlClient } from "../../clients/api";
 import { InsertNewEmployee } from "../../graphql/mutation/employees";
 import { useRouter } from "next/router";
+import { getSignedURLForTweetQuery } from "../../graphql/query/employee";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Dashboard = () => {
   const [token, setToken] = useState(false);
@@ -14,6 +17,43 @@ const Dashboard = () => {
     aadharNumber: 0,
     password: "",
   });
+
+  const handleInputChangeFile = useCallback((input: HTMLInputElement) => {
+    return async (event: Event) => {
+      event.preventDefault();
+      const file: File | null | undefined = input.files?.item(0);
+      if (!file) return;
+
+      const { getSignedURLForTweet } = await graphqlClient.request(
+        getSignedURLForTweetQuery,
+        {
+          imageName: file.name,
+          imageType: file.type,
+        }
+      );
+
+      console.log(getSignedURLForTweet, " new tweet is occuring ");
+
+      if (getSignedURLForTweet) {
+        toast.loading("Uploading...");
+        await axios.put(getSignedURLForTweet, file, {
+          headers: {
+            "Content-Type": file.type,
+          },
+        });
+
+        toast.success("Upload Completed");
+        const url = new URL(getSignedURLForTweet);
+        const myFilePath = `${url.origin}${url.pathname}`;
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          profileImageUrl: myFilePath,
+        }));
+      } else {
+        toast.error("Not Uploaded");
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!localStorage.getItem("_admin_token")) {
@@ -38,15 +78,10 @@ const Dashboard = () => {
     }
   };
 
-  const handleImageChange = (e: any) => {
-    setFormData({
-      ...formData,
-      profileImageUrl: URL.createObjectURL(e.target.files[0]),
-    });
-  };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    console.log(formData, " formdata ");
+
     if (
       formData.aadharNumber &&
       formData.email &&
@@ -66,8 +101,20 @@ const Dashboard = () => {
         aadharNumber: 0,
         password: "",
       });
+    } else {
+      toast.error("fill all the details");
     }
   };
+
+  const handleSelectImage = useCallback(() => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    const handlerFn = handleInputChangeFile(input);
+    input.addEventListener("change", handlerFn);
+    input.click();
+  }, [handleInputChangeFile]);
+
   if (!token) return;
   return (
     <div className="bg-black min-h-screen py-8">
@@ -131,18 +178,13 @@ const Dashboard = () => {
               className="w-full rounded bg-gray-700 px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="uploadImage" className="block text-white mb-2">
-              Upload Image:
-            </label>
-            <input
-              type="file"
-              id="uploadImage"
-              name="uploadImage"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full bg-gray-700 py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-500"
-            />
+          <div className="mb-4 flex justify-end">
+            <button
+              onClick={handleSelectImage}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Upload Image
+            </button>
           </div>
           {formData.profileImageUrl && (
             <img
@@ -153,7 +195,7 @@ const Dashboard = () => {
           )}
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
           >
             Add Employee
           </button>
